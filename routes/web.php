@@ -1,8 +1,16 @@
 <?php
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+//用戶新增測試
+    Route::get('/TestInsertUser', [
+        'as' => 'TestInsertUser',
+        'uses' => 'UserController@TestInsertUser'
+    ]);
 
 //Login OK
     Route::get('/success', function () {
@@ -67,3 +75,5 @@ Route::get('/', function () {
         })->name('errors.503');
 
     });
+
+
