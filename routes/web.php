@@ -13,9 +13,23 @@ Route::get('/', function () {
     ]);
 
 //Login OK
-    Route::get('/success', function () {
-        return view('Customer.index');
-    });
+    Route::post('/login', [
+		'as' => 'logon',
+		'uses' => 'UserController@login'
+	])->name('UserController.login');
+
+    Route::post('/logout', [
+		'as' => 'logout',
+		'uses' => 'UserController@logout'
+	])->name('UserController.logout');
+
+
+Route::group([ 'middleware' => ['logonauth'] ], function(){
+ 
+	Route::get('/success', [
+		'as' => 'success',
+		'uses' => 'UserController@index'
+	])->name('UserController.index');
 
 //客戶資料
     Route::group(['prefix' => 'GroupSms'],function (){
@@ -50,6 +64,7 @@ Route::get('/', function () {
     Route::get('/edit', function () {
         return view('Customer.edit');
     });
+});
 
 //errors
     Route::group(['prefix' => 'errors'],function (){

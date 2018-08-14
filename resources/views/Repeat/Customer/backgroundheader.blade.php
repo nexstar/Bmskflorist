@@ -9,7 +9,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a style="color: black;" href="{{ url('headinfo') }}">管理者</a></li>
                 <li><a style="color: black" href="#" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">登出</a></li>
-                <form id="frm-logout" action="#" method="POST" style="display: none;">
+                <form id="frm-logout" action="{{ route('logoutUserController.logout') }}" method="POST" style="display: none;">
                     {{ csrf_field() }}
                 </form>
             </ul>

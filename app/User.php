@@ -3,17 +3,14 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+#use Illuminate\Foundation\Auth\User as Authenticatable;
+use Jenssegers\Mongodb\Auth\User as Authenticatable;
 
-use Moloquent;
-use DB;
-
-
-//class User extends Authenticatable
-class User extends Moloquent
+class User extends Authenticatable
 {
     use Notifiable;
 
+	protected $connection = 'mongodb';
     protected $collection = 'users';
     protected $primaryKey = '_id';
 
@@ -25,8 +22,12 @@ class User extends Moloquent
         'password', 'remember_token',
     ];
 
-
-
+	public function isPass($auth){
+		if( ($this->password == $auth->password) && ($this->name == $auth->name) ){
+			return true;
+		}
+		return false;
+	}
 
 }
 
