@@ -26,6 +26,10 @@ Route::group([ 'middleware' => ['logonauth'] ], function(){
 		'uses' => 'UserController@index'
 	])->name('UserController.index');
 
+
+	Route::resource('/customerinfo','CustomerInfoController');
+	Route::get('/ExcelExport', 'CustomerInfoController@ExcelExport')->name('customerinfo.ExcelExport');
+
 //headinfo
 	Route::get('/headinfo', 'UserController@edit')->name('UserController.edit');
 	Route::post('/usercontrollerupdate', 'UserController@update')->name('UserController.update');
@@ -52,13 +56,6 @@ Route::group([ 'middleware' => ['logonauth'] ], function(){
         return view('Customer.send');
     });
 
-    Route::get('/create', function () {
-        return view('Customer.create');
-    });
-
-    Route::get('/edit', function () {
-        return view('Customer.edit');
-    });
 });
 
 //errors

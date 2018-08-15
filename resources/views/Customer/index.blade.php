@@ -26,8 +26,8 @@
                             <a href="{{ url('sms') }}" class="btn btn-primary" style="border: 0;background-color: #80B1EA;">發訊息</a>
                         </div>
                         <div class="col-md-4 col-md-offset-4" style="text-align: right;">
-                            <a href="#" class="btn btn-primary" style="border: 0;background-color: #8AAC68;">匯出會員資料</a>
-                            <a href="{{ url('create') }}" class="btn btn-primary" style="border: 0;background-color: #80B1EA;margin-right: 20px;">新增客戶資料</a>
+                            <a href="{{ route('customerinfo.ExcelExport') }}" class="btn btn-primary" style="border: 0;background-color: #8AAC68;">匯出會員資料</a>
+                            <a href="{{ route('customerinfo.create') }}" class="btn btn-primary" style="border: 0;background-color: #80B1EA;margin-right: 20px;">新增客戶資料</a>
                         </div>
                     </div>
 
@@ -46,38 +46,41 @@
                                     <th>動作</th>
                                 </tr>
                                 </thead>
-                                <tbody id="main_table_tbody">
-                                @for($i=0;$i<5;$i++)
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="ch_user[]" value="1">
-                                        </td>
-                                        <td>鄒年寶</td>
-                                        <td>男性</td>
-                                        <td>09xxxxxxxx</td>
-                                        <td style="width: 50%">
-                                            <p class="text-justify">
-                                                根據中央氣象局通報，原位於關島北北西方海面的熱帶性低氣壓已於今天凌晨2時，增強為今年第15號颱風麗琵（Leepi），預計將朝北北西方向前進。
-                                                中央氣象局指出，輕度颱風麗琵，中心位置位於北緯20.90度、東經143.50度，以每小時19公里速度，向北北西進行。颱風中心氣壓998百帕，近中心最大風速每秒18公尺，瞬間最大陣風每秒25公尺，七級風半徑100公里。
-                                                此外，日本放送協會（NHK）報導，第15號颱風於12日凌晨在小笠原群島近海生成。
-                                                報導稱，根據日本氣象廳觀測，12日凌晨0時（台灣11日晚間11時），位於小笠原群島近海的熱帶性低氣壓已變成第15號颱風，中心氣壓998百帕，近中心最大風速每秒20公尺，瞬間最大陣風每秒30公尺，中心東側220公里以內以及中心西側110公里以內，吹著每秒15公尺以上強風。
-                                            </p>
-                                        </td>
-                                        <td>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <button onclick="btn_remove_submit('1')" type="button" class="btn btn-block btn-danger">刪除</button>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <a href="{{ url('edit') }}" class="btn btn-block btn-warning">修改</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endfor
-                                </tbody>
+<tbody id="main_table_tbody">
+
+@foreach($customerinfo as $customerinfokey => $customerinfovalue)
+    <tr>
+        <td>
+            <input type="checkbox" name="ch_user[]" value="{{ $customerinfovalue->id }}">
+        </td>
+         
+        <td>{{ $customerinfovalue->firstname.$customerinfovalue->lastname }}</td>
+        <td>{{ ($customerinfovalue->sex == "1") ? '男性' : '女性' }}</td>
+        <td>{{ $customerinfovalue->privatemobile }}</td>
+        <td style="width: 50%">
+            <p class="text-justify">
+                {!! preg_replace("/\r\n|\r|\n/",'<br/>', $customerinfovalue->remark) !!}
+            </p>
+        </td>
+        <td>
+			<div class="col-md-6">
+                {!! Form::open(['id'=> ('removeform'.$customerinfokey), 'method'=>'DELETE', 'action'=>['CustomerInfoController@destroy', $customerinfovalue->id] ]) !!}   
+                    <div class="form-group">
+                        <button onclick="btn_remove_submit({{$customerinfokey}})" type="button" class="btn btn-block btn-danger">刪除</button>
+                    </div>
+                {!! Form::close() !!}
+            </div>
+            <div class="col-md-6">
+                {!! Form::open(['id'=> ('modifyform'.$customerinfokey), 'method'=>'GET', 'action'=>['CustomerInfoController@edit', $customerinfovalue->id] ]) !!}   
+                    <div class="form-group">
+                        <button onclick="btn_modify_submit({{$customerinfokey}})" type="button" class="btn btn-block btn-warning">修改</button>
+                    </div>
+                {!! Form::close() !!}
+            </div>
+        </td>
+    </tr>
+@endforeach
+</tbody>
                             </table>
                         </div>
                     </div>
@@ -119,15 +122,13 @@
 
         function btn_modify_submit($data){
             if(confirm("確定修改？？")){
-                alert("確定修改");
-                // $("#modifyform"+$data).submit();
+                $("#modifyform"+$data).submit();
             };
         };
 
         function btn_remove_submit($data){
             if(confirm("確定刪除？？")){
-                alert("確定刪除");
-                // $("#removeform"+$data).submit();
+                $("#removeform"+$data).submit();
             };
         };
 
@@ -142,3 +143,4 @@
         }
     </style>
 @endsection
+

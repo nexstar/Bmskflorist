@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <p style="cursor:default;padding: 10px 0px 0px 0px;font-size: 18px;">
-                <a style="color: black;text-decoration: none;" href="{{ url('success') }}">凱特夫人 Flower Shop</a>
+                <a style="color: black;text-decoration: none;" href="{{ url('customerinfo') }}">凱特夫人 Flower Shop</a>
             </p>
         </div>
         <div class="collapse navbar-collapse">

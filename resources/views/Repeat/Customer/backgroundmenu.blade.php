@@ -1,4 +1,4 @@
-<div id="main_left" class="col-md-2" style="width:11.666667%;background-color: rgb(147, 207, 162, 0.3);">
+<div id="main_left" class="col-md-2" style="margin-top:10px;width:11.666667%;background-color: rgb(147, 207, 162, 0.3);">
     <div class="contanier" style="opacity: 1;">
         <ul class="list-unstyled">
             <li style="margin-top: 25px;font-size: 15px;margin-bottom: 25px;">
@@ -19,5 +19,5 @@
     </div>
 </div>
 <script type="text/javascript">
-    $("#main_left").css({ "min-height" : ($( window ).height() - 50) });
+    $("#main_left").css({ "min-height" : ($( window ).height() - 40) });
 </script>

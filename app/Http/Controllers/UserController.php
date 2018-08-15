@@ -79,17 +79,12 @@ class UserController extends Controller
         }
 
         if ( Auth::attempt( $request->only('name','password') )) {
-            return redirect()->route('successUserController.index');
+            return redirect()->route('customerinfo.index');
         }else{
 			return redirect('/');
 		}
 
 	}
-
-	public function index()
-    {
-		return view('Customer.index');
-    }
 
     public function TestInsertUser(){
         $users = new User;
