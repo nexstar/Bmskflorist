@@ -18,11 +18,6 @@ Route::get('/', function () {
 		'uses' => 'UserController@login'
 	])->name('UserController.login');
 
-    Route::post('/logout', [
-		'as' => 'logout',
-		'uses' => 'UserController@logout'
-	])->name('UserController.logout');
-
 
 Route::group([ 'middleware' => ['logonauth'] ], function(){
  
@@ -30,6 +25,10 @@ Route::group([ 'middleware' => ['logonauth'] ], function(){
 		'as' => 'success',
 		'uses' => 'UserController@index'
 	])->name('UserController.index');
+
+//headinfo
+	Route::get('/headinfo', 'UserController@edit')->name('UserController.edit');
+	Route::post('/usercontrollerupdate', 'UserController@update')->name('UserController.update');
 
 //客戶資料
     Route::group(['prefix' => 'GroupSms'],function (){
@@ -51,10 +50,6 @@ Route::group([ 'middleware' => ['logonauth'] ], function(){
 //Index
     Route::get('/sms', function () {
         return view('Customer.send');
-    });
-
-    Route::get('/headinfo', function () {
-        return view('Customer.headinfo');
     });
 
     Route::get('/create', function () {

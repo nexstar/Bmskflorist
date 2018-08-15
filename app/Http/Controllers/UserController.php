@@ -12,14 +12,60 @@ class UserController extends Controller
 
 	protected $validator;
 
-    public function edit($id)
+    public function edit()
     {
-        //
+		$users = User::find('5b7153ec7c82e85d1036e8a1');
+		return view('Customer.headinfo', compact('users'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+		$users = User::find('5b7153ec7c82e85d1036e8a1');
+        switch ($request->type) {
+			case '1':
+				$msg = [
+					'name.required' => '不能為空',
+					'password.required' => '不能為空',
+				];					
+
+				$this->validator = Validator::make($request->all(), [
+					'name' => 'required|',
+					'password' => 'required|',
+				],$msg);
+
+				if ($this->validator->fails()) {
+					return redirect('/headinfo')->withErrors($this->validator)->withInput();
+				}
+
+				$users->name = $request->name;
+				$users->password = bcrypt($request->password);
+				$users->save();
+
+				Auth::logout();
+				return redirect('/');	
+			break;
+			case '2':
+				$msg = [
+					'smsid.required' => '不能為空',
+					'smspwd.required' => '不能為空',
+				];
+
+				$this->validator = Validator::make($request->all(), [
+					'smsid' => 'required|',
+					'smspwd' => 'required|',
+				],$msg);
+
+				if ($this->validator->fails()) {
+					return redirect('/headinfo')->withErrors($this->validator)->withInput();
+				}
+
+				$users->smsname = $request->smsid;
+				$users->smspwd = $request->smspwd;
+				$users->save();
+
+				return redirect('/headinfo');
+			break;
+		}
     }
 
 	public function login(Request $request){
@@ -44,12 +90,6 @@ class UserController extends Controller
     {
 		return view('Customer.index');
     }
-
-
-	public function logout(Request $request){
-		Auth::logout();
-		return redirect('/');
-	}
 
     public function TestInsertUser(){
         $users = new User;
