@@ -56,6 +56,10 @@
                                         </span>
                                 @endif
                             </div>
+                            <div style="height: 97px;margin-bottom: 0px;" class="form-group">
+                                <label for="repassword">密碼再次輸入</label>
+                                <input type="text" class="form-control" id="repassword" name="repassword" placeholder="密碼再次輸入">
+                            </div>
                             <div class="form-group">
                                 <button type="button" onclick="btnhr()"  class="btn btn-block btn-warning">修改</button>
                             </div>
@@ -108,9 +112,19 @@
         $("#main_left").css({ "min-height" : ($( window ).height() - 50) });
 
         function btnhr(){
+			
+
             if(confirm("確定修改？？")){
-                $("#hrform").submit();
+				if( $("#password").val() == $("#repassword").val() ){
+	                $("#hrform").submit();
+				}else{
+					$("#password").val('');
+					$("#repassword").val('');
+					alert("密碼兩者不同");
+				}
             };
+
+
         };
 
         function btnsms(){
