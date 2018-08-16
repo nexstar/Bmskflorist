@@ -28,7 +28,7 @@
                     <div class="row">
                         <div class="col-md-4"></div>
                         <div class="col-md-4 col-md-offset-4" style="text-align: right;">
-                            <a href="{{ url('GroupSms/create') }}" class="btn btn-primary">增加新群組</a>
+                            <a href="{{ url('customergroup/create') }}" class="btn btn-primary">增加新群組</a>
                         </div>
                     </div>
 
@@ -40,40 +40,35 @@
                                     <th>發送</th>
                                     <th>名稱</th>
                                     <th>人數</th>
-                                    <th>備註</th>
                                     <th>動作</th>
                                 </tr>
                                 </thead>
                                 <tbody id="main_table_tbody">
-                                @for($i=0;$i<5;$i++)
+                                @foreach($customergroup as $customergroupKey => $customergroupValue)
                                     <tr>
                                         <td style="width:5%;">
-                                            <a href="{{ url('sms') }}" class="btn btn-block btn-primary">進入發送區</a>
+                                            <a href="{{ route('smscontroller.group', $customergroupValue->id) }}" class="btn btn-block btn-primary">進入發送區</a>
                                         </td>
-                                        <td>好客人</td>
-                                        <td>30</td>
-                                        <td style="width: 50%">
-                                            <p class="text-justify">
-                                                根據中央氣象局通報，原位於關島北北西方海面的熱帶性低氣壓已於今天凌晨2時，增強為今年第15號颱風麗琵（Leepi），預計將朝北北西方向前進。
-                                                中央氣象局指出，輕度颱風麗琵，中心位置位於北緯20.90度、東經143.50度，以每小時19公里速度，向北北西進行。颱風中心氣壓998百帕，近中心最大風速每秒18公尺，瞬間最大陣風每秒25公尺，七級風半徑100公里。
-                                                此外，日本放送協會（NHK）報導，第15號颱風於12日凌晨在小笠原群島近海生成。
-                                                報導稱，根據日本氣象廳觀測，12日凌晨0時（台灣11日晚間11時），位於小笠原群島近海的熱帶性低氣壓已變成第15號颱風，中心氣壓998百帕，近中心最大風速每秒20公尺，瞬間最大陣風每秒30公尺，中心東側220公里以內以及中心西側110公里以內，吹著每秒15公尺以上強風。
-                                            </p>
-                                        </td>
-                                        <td>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <a href="#" class="btn btn-block btn-danger">刪除</a>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <a href="{{ route('GroupSms.edit', $i) }}" class="btn btn-block btn-warning">修改</a>
-                                                </div>
-                                            </div>
+                                        <td>{{ $customergroupValue->name }}</td>
+                                        <td>{{ Count($customergroupValue->addcheckboxgroup) }}</td>
+                                        <td style="width:20%">
+											<div class="col-md-6">
+												{!! Form::open([ 'id'=> ('removeform'.$customergroupKey), 'method'=>'DELETE', 'action'=>['CustomerGroupController@destroy', $customergroupValue->id ] ]) !!}
+													<div class="form-group">
+														<button onclick="btn_remove_submit({{$customergroupKey  }})" type="button" class="btn btn-block btn-danger">刪除</button>
+													</div>
+												{!! Form::close() !!}
+											</div>
+											<div class="col-md-6">
+												{!! Form::open([ 'id'=> ('modifyform'.$customergroupKey), 'method'=>'GET', 'action'=>['CustomerGroupController@edit', $customergroupValue->id ] ]) !!}   
+													<div class="form-group">
+														<button onclick="btn_modify_submit({{ $customergroupKey }})" type="button" class="btn btn-block btn-warning">修改</button>
+													</div>
+												{!! Form::close() !!}
+											</div>
                                         </td>
                                     </tr>
-                                @endfor
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -89,8 +84,20 @@
 
 @section('scripts')
     <script type="text/javascript">
+		 $("#main_left").css({ "min-height" : ($( window ).height() - 50) });
         var _main_table = $( window ).height() - 255;
         $("#main_table").css({"height":_main_table, "overflow-y": "scroll"});
+		function btn_modify_submit($data){
+            if(confirm("確定修改？？")){
+                $("#modifyform"+$data).submit();
+            };
+        };
+
+        function btn_remove_submit($data){
+            if(confirm("確定刪除？？")){
+                $("#removeform"+$data).submit();
+            };
+        }
     </script>
     <style type="text/css">
         table, th{

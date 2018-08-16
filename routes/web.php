@@ -18,7 +18,6 @@ Route::get('/', function () {
 		'uses' => 'UserController@login'
 	])->name('UserController.login');
 
-
 Route::group([ 'middleware' => ['logonauth'] ], function(){
  
 	Route::get('/success', [
@@ -28,33 +27,16 @@ Route::group([ 'middleware' => ['logonauth'] ], function(){
 
 
 	Route::resource('/customerinfo','CustomerInfoController');
+	Route::resource('/customergroup','CustomerGroupController');
+	
 	Route::get('/ExcelExport', 'CustomerInfoController@ExcelExport')->name('customerinfo.ExcelExport');
 
-//headinfo
 	Route::get('/headinfo', 'UserController@edit')->name('UserController.edit');
 	Route::post('/usercontrollerupdate', 'UserController@update')->name('UserController.update');
 
-//客戶資料
-    Route::group(['prefix' => 'GroupSms'],function (){
-
-        Route::get('/', function () {
-            return view('Customer.GroupSms.index');
-        })->name('GroupSms');
-
-        Route::get('/create', function () {
-            return view('Customer.GroupSms.create');
-        })->name('GroupSms.create');
-
-        Route::get('/edit/{id}', function ($id) {
-            return view('Customer.GroupSms.edit',compact('id'));
-        })->name('GroupSms.edit');
-
-    });
-
-//Index
-    Route::get('/sms', function () {
-        return view('Customer.send');
-    });
+	Route::post('singlesms', 'SmsController@Single')->name('smscontroller.single');
+	Route::get('groupsms/{id}', 'SmsController@Group')->name('smscontroller.group');
+	Route::post('sendsms', 'SmsController@Send')->name('smscontroller.send');
 
 });
 

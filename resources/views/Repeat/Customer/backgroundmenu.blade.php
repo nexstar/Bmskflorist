@@ -5,7 +5,7 @@
                 <p style="color: black;letter-spacing: 7px;text-decoration: none;">客戶資料</p>
                 <ul style="list-style: none;padding-left: 20px;">
                     <li>
-                        <a style="color:black;" href="{{ url('GroupSms') }}">群組簡訊</a>
+                        <a style="color:black;" href="{{ url('customergroup') }}">群組簡訊</a>
                     </li>
                 </ul>
             </li>

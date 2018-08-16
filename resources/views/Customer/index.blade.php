@@ -20,10 +20,9 @@
 
                     <div class="row">
                         <div class="col-md-4">
-                            {{--{!! Form::open(['id' => 'ch_data_id','method' => 'POST','files' => true]) !!}--}}
-                            {{--<button onclick="btn_check_submit()" type="button" class="btn btn-primary" style="border: 0;background-color: #80B1EA;">發訊息</button>--}}
-                            {{--{!! Form::close() !!}--}}
-                            <a href="{{ url('sms') }}" class="btn btn-primary" style="border: 0;background-color: #80B1EA;">發訊息</a>
+                            {!! Form::open(['id' => 'ch_data_id','method' => 'POST', 'action'=> ['SmsController@Single'],'files' => true]) !!}
+                           	<button onclick="btn_check_submit()" type="button" class="btn btn-primary" style="border: 0;background-color: #80B1EA;">發訊息</button>
+                           {!! Form::close() !!}
                         </div>
                         <div class="col-md-4 col-md-offset-4" style="text-align: right;">
                             <a href="{{ route('customerinfo.ExcelExport') }}" class="btn btn-primary" style="border: 0;background-color: #8AAC68;">匯出會員資料</a>
@@ -113,8 +112,7 @@
                 $('input[name="ch_user[]"]:checked').each(function(i){
                     Check_Tmp += '<input type="hidden" name="ch_data[]" value="'+$(this).val()+'">';
                 });
-                console.log(Check_Tmp);
-                // $("#ch_data_id").append(Check_Tmp).submit();
+                $("#ch_data_id").append(Check_Tmp).submit();
             }else{
                 alert("請選擇需要發送的客戶...");
             };

@@ -24,57 +24,47 @@
                         <p>工具說明</p>
                         <p>修改客戶群組。</p>
                     </div>
-
-                    <div class="row" style="margin:20px 0px;">
+					<div class="row" style="margin:20px 0px;">
                         <div class="col-md-12">
-                            {!! Form::open([ 'method' => 'POST', 'files' => true ]) !!}
+                            {!! Form::open(['id' => 'smsgroupupdate', 'action' => ['CustomerGroupController@update', $customergroup->id], 'method' => 'PUT', 'files' => true ]) !!}
+
 
                             <div class="row">
-
-                                <div class="col-md-6" style="height: 97px;">
+                                <div class="col-md-12" style="height: 97px;">
                                     <div class="form-group">
                                         <label for="name">名稱</label>
-                                        <input type="text" class="form-control">
+                                        <input value="{{ $customergroup->name }}" id="name" name="name" type="text" class="form-control">
                                     </div>
                                 </div>
-
-                                <div class="col-md-6" style="height: 97px;">
-                                    <div class="form-group">
-                                        <label for="name">類型</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-
                             </div>
 
-                            <div class="row" style="margin:0px 0px 10px 0px">
-                                <p>請點選需要加入群組的客戶</p>
-                                <div class="col-md-12" style="border-radius: 5px;overflow-y: scroll;height: 300px;border: 1px solid #dddddd;">
-                                    @for($i=0;$i<40;$i++)
-                                        <div class="col-md-3" style="margin: 15px 0px 10px 0px;text-align: center;">
-                                            <div class="input-group">
-                                                <div class="input-group-addon">
-                                                    <input type="checkbox" name="addcheckboxgroup[]" value="1">
-                                                </div>
-                                                <input placeholder="鄒年寶 ( 09xxxxxxxx )" style="text-align: center;" type="text" class="form-control" disabled="true">
-                                            </div>
-                                        </div>
-                                    @endfor
-                                </div>
-                            </div>
+							<div class="row" style="margin:0px 0px 10px 0px">
+								<p>請點選需要加入群組的客戶</p>
+								<div class="col-md-12" style="border-radius: 5px;overflow-y: scroll;height: 300px;border: 1px solid #dddddd;">
+									@foreach($reinfo as $reinfovalue)
+									<div class="col-md-3" style="margin: 15px 0px 10px 0px;text-align: center;">
+										<div class="input-group">
+											<div class="input-group-addon">
+												<input {{ (($reinfovalue['check'] == 1) ?'checked':'') }} type="checkbox" name="addcheckboxgroup[]" value="{{ $reinfovalue['id'] }}">
+											</div>
+											<input value="{{ $reinfovalue['name'] }} ( {{ $reinfovalue['phone'] }} )" style="text-align: center;" type="text" class="form-control" disabled="true">
+										</div>
+									</div>
+									@endforeach
+								</div>
+							</div>							
 
                             <div class="row">
 
                                 <div class="col-md-12" style="text-align: right;">
-                                    <button type="submit" class="btn btn-primary">儲存</button>
+                                    <button onclick="btn_check_submit()" type="button" class="btn btn-primary">修改</button>
                                 </div>
 
                             </div>
 
                             {!! Form::close() !!}
                         </div>
-                    </div>
-
+                    </div>                    
 
                 </div>
             </div>
@@ -85,5 +75,22 @@
 @endsection
 
 @section('scripts')
+	<script type="text/javascript">
+		$("#main_left").css({ "min-height" : ($( window ).height() - 50) });
+		function btn_check_submit(){
+		    let Check_Tmp = '';
 
+		    if( $("#name").val() == ""){
+		    	alert("名稱不能為空");
+		    }else{
+		     	if($('input[name="addcheckboxgroup[]"]:checked').length <=0){
+		     		alert("請選擇需要加入的客戶...");
+		        }else{
+					if(confirm("確定修改？？")){
+						$("#smsgroupupdate").submit();
+					}
+		        };   	
+		    }
+		};
+	</script>
 @endsection

@@ -13,7 +13,7 @@ class CustomerGroup extends Moloquent
       protected $collection = 'customer_groups';
       protected $primaryKey = '_id';
       protected $fillable = [
-            'name','type','content'
+            'name','type','addcheckboxgroup'
       ];
 
 }

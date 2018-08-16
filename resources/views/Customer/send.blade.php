@@ -21,12 +21,9 @@
                         <div class="col-md-4" style="text-align: center;">
                             <h2>簡訊發送預備中</h2>
                         </div>
-
                         <div class="col-md-4" style="text-align: right;padding-top: 5px;">
-                            {{--<input type="hidden" name="smscount" value="{{ (strpos($smscount,'密碼') >= 1)?0:$smscount }}">--}}
-                            {{--<h3>簡訊剩餘量: {{ (strpos($smscount,'密碼') >= 1)?'帳密錯誤':$smscount }}</h3>--}}
-                            <input type="hidden" name="smscount" value="1">
-                            <h3>簡訊剩餘量: 123123</h3>
+							<input type="hidden" name="smscount" value="{{ (strpos($smscount,'密碼') >= 1)?0:$smscount }}">
+							 <h3>簡訊剩餘量: {{ (strpos($smscount,'密碼') >= 1)?'帳密錯誤':$smscount }}</h3>
                         </div>
 
                     </div>
@@ -40,27 +37,25 @@
                     <div class="row" style="margin:20px 0px;">
                         <p>發送名單</p>
                         <div class="col-md-12" style="border-radius: 5px;overflow-y: scroll;height: 200px;border: 1px solid #dddddd;">
-                            @for($i=0;$i<10;$i++)
-                                <div class="col-md-2" style="padding-right: 0px;padding-left: 0px;margin: 10px 0px 10px 0px;text-align: center;">
-                                    {{--<p>{{$checkkey +1}}. {{$checkvalue['name']}} ( {{$checkvalue['phone']}} )</p>--}}
-                                    <p>{{ $i }}.鄒年寶 ( 09xxxxxxxx )</p>
-                                </div>
-                            @endfor
+							@foreach($checkArray as $checkArraykey => $checkArrayvalue)
+                            	<div class="col-md-2" style="padding-right: 0px;padding-left: 0px;margin: 10px 0px 10px 0px;text-align: center;">
+    		                        <p>{{$checkArraykey +1}}. {{$checkArrayvalue['name']}} ( {{$checkArrayvalue['phone']}} )</p>
+	                            </div>
+                            @endforeach
                         </div>
                     </div>
 
                     <div class="row" style="margin:20px 0px;">
-                        {!! Form::open(['id'=>'sendsms','method' => 'POST', 'files' => true]) !!}
-                        @for($i=0;$i<20;$i++)
-                            <input type="hidden" name="Hubcheck[]" value="1">
-                            <input type="hidden" name="Hubname[]" value="1">
-                        @endfor
+                        {!! Form::open(['id'=>'sendsms','method' => 'POST', 'action' => 'SmsController@Send','files' => true]) !!}
+						@foreach($checkArray as $checkArraykey => $checkArrayvalue)
+							<input type="hidden" name="Hubcheck[]" value="{{$checkArrayvalue['phone']}}">
+							<input type="hidden" name="Hubname[]" value="{{$checkArrayvalue['name']}}">
+						@endforeach
                         <p>內容撰寫 ( 字數：<span id="countword">0</span> )</p>
                         <textarea name="contents" style="border-radius: 5px;width: 100%;height: 100px;resize: none;overflow: auto;background-color: rgba(155,155,155,0);border: 1px solid #dddddd;"></textarea>
                         <p style="color: red;letter-spacing: 5px;">注意：1則70字/1元，超過字數2則計算。</p>
                         <div class="col-md-12" style="text-align: right;">
-                            {{--<button {{ ($smscount < 50)? 'disabled="disabled"':'' }}  type="button" onclick="sendsms()" class="btn btn-primary"> {{ ($smscount < 50)? '需儲值' : '立刻發送'}}</button>--}}
-                            <button type="button" onclick="sendsms()" class="btn btn-primary">立刻發送</button>
+                        	<button {{ ($smscount < 50)? 'disabled="disabled"':'' }}  type="button" onclick="sendsms()" class="btn btn-primary"> {{ ($smscount < 50)? '需儲值' : '立刻發送'}}</button>
                         </div>
                         {!! Form::close() !!}
                     </div>
