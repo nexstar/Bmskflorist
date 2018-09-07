@@ -99,7 +99,7 @@ class CustomerInfoController extends Controller
 
     public function edit($id)
     {
-		$customerinfo = CustomerInfo::findOrFail($id)->get();
+		$customerinfo = CustomerInfo::findOrFail($id);
         return view('Customer.edit', compact('customerinfo'));
     }
 
